@@ -19,20 +19,32 @@ class _UploadingImageToFirebaseStorageState
 
   ///NOTE: Only supported on Android & iOS
   ///Needs image_picker plugin {https://pub.dev/packages/image_picker}
-  final picker = ImagePicker();
 
-  Future pickImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
+  Future pickImageCam() async {
+    // ignore: deprecated_member_use
+    File pickedFile = await ImagePicker.pickImage(
+        source: ImageSource.camera, imageQuality: 50);
 
     setState(() {
-      _imageFile = File(pickedFile.path);
+      _imageFile = pickedFile;
+    });
+  }
+
+  Future pickImageGall() async {
+    // ignore: deprecated_member_use
+    File pickedFile = await ImagePicker.pickImage(
+        source: ImageSource.gallery, imageQuality: 50);
+
+    setState(() {
+      _imageFile = pickedFile;
     });
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
     String fileName = basename(_imageFile.path);
+    print(fileName);
     StorageReference firebaseStorageRef =
-        FirebaseStorage.instance.ref().child('uploads/$fileName');
+        FirebaseStorage.instance.ref().child('uploads').child(fileName);
     StorageUploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
     StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
     taskSnapshot.ref.getDownloadURL().then(
@@ -40,67 +52,74 @@ class _UploadingImageToFirebaseStorageState
         );
   }
 
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('Photo Library'),
+                      onTap: () {
+                        pickImageGall();
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('Camera'),
+                    onTap: () {
+                      pickImageCam();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
+      body: Column(
         children: <Widget>[
-          Container(
-            height: 360,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(250.0),
-                    bottomRight: Radius.circular(10.0)),
-                gradient: LinearGradient(
-                    colors: [green, orange],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight)),
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 80),
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                    child: Text(
-                      "Uploading Image to Firebase Storage",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 28,
-                          fontStyle: FontStyle.italic),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20.0),
-                Expanded(
-                  child: Stack(
-                    children: <Widget>[
-                      Container(
-                        height: double.infinity,
-                        margin: const EdgeInsets.only(
-                            left: 30.0, right: 30.0, top: 10.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(30.0),
-                          child: _imageFile != null
-                              ? Image.file(_imageFile)
-                              : FlatButton(
-                                  child: Icon(
-                                    Icons.add_a_photo,
-                                    color: Colors.blue,
-                                    size: 50,
-                                  ),
-                                  onPressed: pickImage,
-                                ),
+          SizedBox(height: 20.0),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                _showPicker(context);
+              },
+              child: CircleAvatar(
+                radius: 25,
+                backgroundColor: Color(0xffFDCF09),
+                child: _imageFile != null
+                    ? ClipRect(
+                        child: Image.file(
+                          _imageFile,
+                          width: 50,
+                          height: 50,
+                          fit: BoxFit.fitHeight,
+                        ),
+                      )
+                    : Container(
+                        decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(50)),
+                        width: 50,
+                        height: 50,
+                        child: Icon(
+                          Icons.camera_alt,
+                          color: Colors.grey[800],
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                uploadImageButton(context),
-              ],
+              ),
             ),
           ),
+          uploadImageButton(context),
         ],
       ),
     );
@@ -114,7 +133,7 @@ class _UploadingImageToFirebaseStorageState
             padding:
                 const EdgeInsets.symmetric(vertical: 5.0, horizontal: 16.0),
             margin: const EdgeInsets.only(
-                top: 30, left: 20.0, right: 20.0, bottom: 20.0),
+                top: 10, left: 10.0, right: 10.0, bottom: 10.0),
             decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [orange, green],

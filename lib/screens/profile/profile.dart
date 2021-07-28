@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:trial/models/post.dart';
 import 'package:trial/models/user.dart';
-import 'package:trial/screens/authenticate/sign_in.dart';
 import 'package:trial/screens/home/home.dart';
-import 'package:trial/screens/profile/post.dart';
+import 'package:trial/screens/profile/createpost.dart';
 import 'package:trial/screens/profile/profileedit.dart';
-import 'package:trial/screens/profile/profilepost.dart';
 import 'package:trial/screens/profile/profiletile.dart';
-import 'package:trial/screens/home/utils.dart';
 import 'package:trial/services/auth.dart';
 import 'package:trial/services/database.dart';
+import 'package:trial/services/postdatabase.dart';
 
 class Profile extends StatelessWidget {
   final AuthService _auth = AuthService();
@@ -26,8 +25,9 @@ class Profile extends StatelessWidget {
           });
     }
 
-    return StreamProvider<List<UserData>>.value(
-      value: DatabaseService().users,
+    var deviceSize = MediaQuery.of(context).size;
+    return StreamProvider<List<UserData>>(
+      create: (_) => DatabaseService().users,
       initialData: [],
       child: new Scaffold(
         backgroundColor: Colors.blueGrey[50],
@@ -43,26 +43,45 @@ class Profile extends StatelessWidget {
                 label: Text('Edit Profile'))
           ],
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    ProfileTile(),
-                    new SizedBox(
-                      width: 40.0,
-                    ),
-                    new Text(
-                      '  Recent Posts',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 30.0),
-                    ),
-                    UploadingImageToFirebaseStorage(),
-                  ]),
+        body: Container(
+          height: deviceSize.height,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      ProfileTile(),
+                      new SizedBox(
+                        width: 40.0,
+                      ),
+                      new Text(
+                        '  Recent Posts',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 30.0),
+                      ),
+                      new SizedBox(
+                        height: 420.0,
+                      ),
+                      StreamProvider<List<Postdata>>(
+                        create: (_) => PostDatabaseService().posts,
+                        initialData: [],
+                        child: new IconButton(
+                          icon: Icon(Icons.local_see_sharp),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CreatePost()),
+                            );
+                          },
+                        ),
+                      )
+                    ]),
+              ),
             ),
           ),
         ),
