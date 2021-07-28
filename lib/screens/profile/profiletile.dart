@@ -9,85 +9,89 @@ class ProfileTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
+    var deviceSize = MediaQuery.of(context).size;
     return StreamBuilder<UserData>(
         stream: DatabaseService(uid: user.uid).userData,
         // ignore: missing_return
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             UserData userData = snapshot.data;
-            return Padding(
-              padding: EdgeInsets.only(top: 8.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      width: 150.0,
-                      height: 150.0,
-                      decoration: new BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: new DecorationImage(
-                              fit: BoxFit.fill,
-                              image: new NetworkImage(
-                                  "https://c8.alamy.com/comp/2B1FH8E/vertical-portrait-of-a-happy-little-girl-smiling-on-a-blue-background-happy-childhood-and-lifestyle-concept-copy-space-for-text-2B1FH8E.jpg"))),
-                      margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                    ),
-                  ),
-                  Expanded(
+            return Container(
+              height: deviceSize.height * 0.20,
+              child: Padding(
+                padding: EdgeInsets.only(top: 8.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
                       flex: 1,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            userData.name,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 30.0,
+                      child: Container(
+                        width: 150.0,
+                        height: 150.0,
+                        decoration: new BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: new DecorationImage(
+                                fit: BoxFit.fill,
+                                image: new NetworkImage(
+                                    "https://c8.alamy.com/comp/2B1FH8E/vertical-portrait-of-a-happy-little-girl-smiling-on-a-blue-background-happy-childhood-and-lifestyle-concept-copy-space-for-text-2B1FH8E.jpg"))),
+                        margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                      ),
+                    ),
+                    Expanded(
+                        flex: 1,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              userData.name,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 30.0,
+                              ),
                             ),
-                          ),
-                          const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 2.0)),
-                          Text(
-                            userData.email,
-                            style: const TextStyle(fontSize: 15.0),
-                          ),
-                          new ElevatedButton(
-                            child: Row(
-                              children: <Widget>[
-                                Icon(Icons.favorite_border_outlined,
-                                    color: Colors.pink),
-                                Text(
-                                  '${userData.nooflikes} likes',
-                                  style: const TextStyle(
-                                      fontSize: 15.0,
-                                      color: Colors.pink,
-                                      fontWeight: FontWeight.w500),
-                                )
-                              ],
+                            const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 2.0)),
+                            Text(
+                              userData.email,
+                              style: const TextStyle(fontSize: 15.0),
                             ),
-                            onPressed: null,
-                          ),
-                          const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 1.0)),
-                          new ElevatedButton(
-                            child: Row(
-                              children: <Widget>[
-                                Icon(Icons.photo_rounded, color: Colors.pink),
-                                Text(
-                                  '${userData.noofposts} posts',
-                                  style: const TextStyle(
-                                      fontSize: 15.0,
-                                      color: Colors.pink,
-                                      fontWeight: FontWeight.w500),
-                                )
-                              ],
+                            new ElevatedButton(
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(Icons.favorite_border_outlined,
+                                      color: Colors.pink),
+                                  Text(
+                                    '${userData.nooflikes} likes',
+                                    style: const TextStyle(
+                                        fontSize: 15.0,
+                                        color: Colors.pink,
+                                        fontWeight: FontWeight.w500),
+                                  )
+                                ],
+                              ),
+                              onPressed: null,
                             ),
-                            onPressed: null,
-                          ),
-                        ],
-                      ))
-                ],
+                            const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 1.0)),
+                            new ElevatedButton(
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(Icons.photo_rounded, color: Colors.pink),
+                                  Text(
+                                    '${userData.noofposts} posts',
+                                    style: const TextStyle(
+                                        fontSize: 15.0,
+                                        color: Colors.pink,
+                                        fontWeight: FontWeight.w500),
+                                  )
+                                ],
+                              ),
+                              onPressed: null,
+                            ),
+                          ],
+                        ))
+                  ],
+                ),
               ),
             );
           } else {}

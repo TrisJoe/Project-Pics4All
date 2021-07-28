@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:trial/screens/profile/profile.dart';
-import 'package:trial/screens/home/utils.dart';
 import 'package:trial/services/auth.dart';
 import '../home/home.dart';
 
-class Post extends StatelessWidget {
+class Post1 extends StatelessWidget {
   final AuthService _auth = AuthService();
   BoxDecoration myBoxDecoration() {
     return BoxDecoration(

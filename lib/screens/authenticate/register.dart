@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:trial/screens/authenticate/sign_in.dart';
 import 'package:trial/services/auth.dart';
-import 'package:trial/shared/loading.dart';
 import 'package:trial/shared/constants.dart';
 
 class Register extends StatefulWidget {

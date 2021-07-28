@@ -1,5 +1,3 @@
-import 'dart:math';
-
 class Utils {
   /*static String getTimeDifference(DateTime dateToCompare) {
     Duration difference = DateTime.now().difference(dateToCompare);

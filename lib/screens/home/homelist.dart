@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:trial/screens/home/homestories.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomeList extends StatefulWidget {
   @override
@@ -83,18 +81,20 @@ class _HomeListState extends State<HomeList> {
                                   )
                                 ],
                               ),
-                              new Text(
-                                '250',
-                                style: TextStyle(
-                                    color: Colors.pink,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.0),
-                              ),
-                              new IconButton(
-                                icon: Icon(Icons.favorite_border_outlined,
-                                    color: Colors.pink),
-                                onPressed: null,
-                              )
+                              new Row(children: [
+                                new Text(
+                                  '250',
+                                  style: TextStyle(
+                                      color: Colors.pink,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20.0),
+                                ),
+                                new IconButton(
+                                  icon: Icon(Icons.favorite_border_outlined,
+                                      color: Colors.pink),
+                                  onPressed: null,
+                                )
+                              ])
                             ],
                           ),
                         )
