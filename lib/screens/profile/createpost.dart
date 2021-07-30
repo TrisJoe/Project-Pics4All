@@ -11,6 +11,7 @@ class CreatePost extends StatefulWidget {
 
 class _CreatePostState extends State<CreatePost> {
   final _formkey1 = GlobalKey<FormState>();
+  TextEditingController titleController = TextEditingController();
   String _currenttitle;
   String _currentname;
   String _currentimageURL;
@@ -31,9 +32,10 @@ class _CreatePostState extends State<CreatePost> {
                 height: 20.0,
               ),
               TextFormField(
+                controller: titleController,
                 decoration: text.copyWith(hintText: 'Title of Post'),
                 validator: (val) => val.isEmpty ? 'Please enter a Title' : null,
-                onChanged: (val) => setState(() => _currenttitle = val),
+                // onChanged: (val) => setState(() => _currenttitle = val),
               ),
               SizedBox(
                 height: 20.0,
@@ -55,7 +57,7 @@ class _CreatePostState extends State<CreatePost> {
                 onPressed: () async {
                   if (_formkey1.currentState.validate()) {
                     await PostDatabaseService().updatePostdata(_currentimageURL,
-                        _currenttitle, _currentname, 0, _currentuid);
+                        titleController.text, _currentname, 0, _currentuid);
                     Navigator.pop(context);
                   }
                 },
