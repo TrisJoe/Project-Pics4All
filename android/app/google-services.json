@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "568207283009",
+    "project_id": "project-pics4all-4c1a2",
+    "storage_bucket": "project-pics4all-4c1a2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:568207283009:android:50e67e0aac3bedb679c7c0",
+        "android_client_info": {
+          "package_name": "com.example.Project4ALL"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "568207283009-q1d39l3v80r8ggff9i5ubaim7v7g8kef.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9l50NsTudmn4h4QuTf55eOUBiZMH_Lhc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "568207283009-q1d39l3v80r8ggff9i5ubaim7v7g8kef.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
