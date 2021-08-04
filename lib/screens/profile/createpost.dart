@@ -11,78 +11,59 @@ class CreatePost extends StatefulWidget {
 
 class _CreatePostState extends State<CreatePost> {
   final _formkey1 = GlobalKey<FormState>();
+  TextEditingController titleController = TextEditingController();
   String _currenttitle;
   String _currentname;
   String _currentimageURL;
-  String _currentnooflikespost;
   String _currentuid;
   @override
   Widget build(BuildContext context) {
-    final post = Provider.of<Post>(context);
-    return ChangeNotifierProvider(
-      create: (BuildContext context) {},
-      child: StreamBuilder<Postdata>(
-        stream: PostDatabaseService(key: post.key).postData,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            Postdata postData = snapshot.data;
-            return Form(
-              key: _formkey1,
-              child: Column(
-                children: <Widget>[
-                  Text(
-                    'Create a New Post',
-                    style: TextStyle(fontSize: 18.0),
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  TextFormField(
-                    initialValue: postData.title,
-                    decoration: text.copyWith(hintText: 'Title of Post'),
-                    validator: (val) =>
-                        val.isEmpty ? 'Please enter a Title' : null,
-                    onChanged: (val) => setState(() => _currenttitle = val),
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  TextFormField(
-                    initialValue: postData.name,
-                    decoration: text.copyWith(hintText: 'Name'),
-                    validator: (val) =>
-                        val.isEmpty ? 'Please enter a Name' : null,
-                    onChanged: (val) => setState(() => _currentname = val),
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  RaisedButton(
-                    color: Colors.blue,
-                    child: Text(
-                      'Update',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    onPressed: () async {
-                      if (_formkey1.currentState.validate()) {
-                        await PostDatabaseService(key: post.key).updatePostdata(
-                            _currentimageURL ?? postData.imageURL,
-                            _currenttitle ?? postData.title,
-                            _currentname ?? postData.name,
-                            _currentnooflikespost ?? postData.nooflikespost,
-                            _currentuid ?? postData.uid);
-                        Navigator.pop(context);
-                      }
-                    },
-                  )
-                ],
+    return Scaffold(
+        appBar: AppBar(),
+        body: Form(
+          key: _formkey1,
+          child: Column(
+            children: <Widget>[
+              Text(
+                'Create a New Post',
+                style: TextStyle(fontSize: 18.0),
               ),
-            );
-          } else {
-            return Container();
-          }
-        },
-      ),
-    );
+              SizedBox(
+                height: 20.0,
+              ),
+              TextFormField(
+                controller: titleController,
+                decoration: text.copyWith(hintText: 'Title of Post'),
+                validator: (val) => val.isEmpty ? 'Please enter a Title' : null,
+                // onChanged: (val) => setState(() => _currenttitle = val),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              TextFormField(
+                decoration: text.copyWith(hintText: 'Name'),
+                validator: (val) => val.isEmpty ? 'Please enter a Name' : null,
+                onChanged: (val) => setState(() => _currentname = val),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              RaisedButton(
+                color: Colors.blue,
+                child: Text(
+                  'Update',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () async {
+                  if (_formkey1.currentState.validate()) {
+                    await PostDatabaseService().updatePostdata(_currentimageURL,
+                        titleController.text, _currentname, 0, _currentuid);
+                    Navigator.pop(context);
+                  }
+                },
+              )
+            ],
+          ),
+        ));
   }
 }

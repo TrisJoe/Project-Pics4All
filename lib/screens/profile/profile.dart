@@ -66,20 +66,16 @@ class Profile extends StatelessWidget {
                       new SizedBox(
                         height: 420.0,
                       ),
-                      StreamProvider<List<Postdata>>(
-                        create: (_) => PostDatabaseService().posts,
-                        initialData: [],
-                        child: new IconButton(
-                          icon: Icon(Icons.local_see_sharp),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CreatePost()),
-                            );
-                          },
-                        ),
-                      )
+                      new IconButton(
+                        icon: Icon(Icons.local_see_sharp),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CreatePost()),
+                          );
+                        },
+                      ),
                     ]),
               ),
             ),
